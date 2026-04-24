@@ -23,7 +23,9 @@ class User extends Authenticatable
         'email',
         'password',
     ];
-
+    public function file(){
+        return $this->hasMany(Files::class , 'uploaded_by');
+    }
     /**
      * The attributes that should be hidden for serialization.
      *
