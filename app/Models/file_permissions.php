@@ -22,4 +22,7 @@ class file_permissions extends Model
     public function user(){
         return $this->belongsTo(User::class , "user_id");
     }
+    public function file(){
+        return $this->belongsTo(Files::class , "file_id");
+    }
 }
