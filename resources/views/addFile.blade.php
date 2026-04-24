@@ -27,11 +27,32 @@
         <input type="file" name="path" />
         <input type="text" name="type" />
         <input type="text" name="size" />
-        <input type="text" name="canRead" />
-        <input type="text" name="canPrint" />
-        <input type="text" name="canDelete" />
-        <input type="text" name="canUpdate" />
-        <input type="text" name="canCopy" />
+        <select id="user_id">
+            {{-- user --}}
+        </select>
+        <select id="file_id">
+            {{-- <option value="true">file</option> --}}
+        </select>
+        <select id="canRead">
+            <option value="true">Can Read</option>
+            <option value="false">Can not Read</option>
+        </select>
+        <select id="canPrint">
+            <option value="true">Can Print</option>
+            <option value="false">Can not print</option>
+        </select>
+        <select id="canDelete">
+            <option value="true">Can Delete</option>
+            <option value="false">Can not delete</option>
+        </select>
+        <select id="canUpdate">
+            <option value="true">Can update</option>
+            <option value="false">Can not update</option>
+        </select>
+        <select id="canCopy">
+            <option value="true">Can copy</option>
+            <option value="false">Can not copy</option>
+        </select>
       </form>
     </body>
 </html>
