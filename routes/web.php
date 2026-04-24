@@ -19,7 +19,7 @@ Route::middleware('auth')->group(function () {
 });
 
 Route::prefix('file')->group(function(){
-    Route::view('addFile' , 'addFile');
+    Route::get('addFile' , [FilesController::class , "shoingForm"]);
     Route::post('insert' , [FilesController::class , 'insert']);
 });
 

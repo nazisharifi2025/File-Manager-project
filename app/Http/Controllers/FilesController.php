@@ -9,11 +9,16 @@ use Illuminate\Http\Request;
 
 class FilesController extends Controller
 {
+    public function shoingForm(){
+        $files = Files::all();
+        $user = User::all();
+        return view('addFile' , compact('files', 'user'));
+    }
     public function insert(Request $request , string $id){
         $user = User::where("role" , "Admin")->get();
         $path = null;
         if($request->hasFile('path')){
-            $path = $request->file('path')->store('Files' , 'public');
+            $path = $request->file('path')->store('files' , 'public');
         }
         $file= new Files();
         $file->create([

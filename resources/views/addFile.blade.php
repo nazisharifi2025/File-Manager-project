@@ -22,37 +22,44 @@
         @endif
     </head>
     <body  class=" bg-slate-950 min-h-screen w-full">
-      <form>
+      <form action="{{ URL('files/insert') }}" method="POST" enctype="multipart/form-data">
+        @csrf
         <input type="text" name="name" />
-        <input type="file" name="path" />
+        <input type="file" accept="image/*" name="path" />
         <input type="text" name="type" />
         <input type="text" name="size" />
-        <select id="user_id">
+        <select name="user_id">
+            @foreach ($user as $u)
+            <option value="{{ $u->id }}">{{ $u->name }}</option>
+            @endforeach
             {{-- user --}}
         </select>
-        <select id="file_id">
-            {{-- <option value="true">file</option> --}}
+        <select name="file_id">
+            @foreach ($files as $file)
+               <option value="{{ $file->id }}">{{ $file->name }}</option>
+               @endforeach
         </select>
-        <select id="canRead">
+        <select name="canRead">
             <option value="true">Can Read</option>
             <option value="false">Can not Read</option>
         </select>
-        <select id="canPrint">
+        <select name="canPrint">
             <option value="true">Can Print</option>
             <option value="false">Can not print</option>
         </select>
-        <select id="canDelete">
+        <select name="canDelete">
             <option value="true">Can Delete</option>
             <option value="false">Can not delete</option>
         </select>
-        <select id="canUpdate">
+        <select name="canUpdate">
             <option value="true">Can update</option>
             <option value="false">Can not update</option>
         </select>
-        <select id="canCopy">
+        <select name="canCopy">
             <option value="true">Can copy</option>
             <option value="false">Can not copy</option>
         </select>
+        <button type="submit">send</button>
       </form>
     </body>
 </html>
