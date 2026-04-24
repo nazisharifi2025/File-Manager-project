@@ -22,37 +22,16 @@
         @endif
     </head>
     <body  class=" bg-slate-950 min-h-screen w-full">
-        <x-app-layout>
-   <div class=" grid grid-cols-5 w-full gap-3 min-h-screen">
-    <div class=" bg-slate-700/60  col-span-1 w-full h-full flex-col flex">
-        <div class=" p-4 border-b border-slate-900 gap-2 text-white flex justify-center items-center">
-        <i class="fas fa-archive text-blue-400 text-3xl"></i>
-        <h1 class=" text-3xl font-bold text-center">Dashbord</h1>
-        </div>
-        <h1 class=" font-bold text-white px-3 py-4">File Manager</h1>
-        <div class=" flex flex-col gap-3">
-        <div class=" flex w-full gap-3 items-center font-medium text-white px-12">
-            <i class="fas fa-folder"></i> My Files
-        </div>
-        <div class=" flex w-full gap-3 items-center font-medium text-white px-12">
-            <i class="fas fa-upload"></i> Upload Files
-        </div>
-        <div class=" flex w-full gap-3 items-center font-medium text-white px-12">
-           <i class="fas fa-folder-open"></i> Folders
-        </div>
-        <div class=" flex w-full gap-3 items-center font-medium text-white px-12">
-            <i class="fas fa-star"></i> Favorites
-        </div>
-        <div class=" flex w-full gap-3 items-center font-medium text-white px-12">
-           <i class="fas fa-trash"></i> Trash
-        </div>
-        <div class=" flex w-full gap-3 items-center font-medium text-white px-12">
-           <i class="fas fa-cog"></i> Settings
-        </div>
-    </div>
-    </div>
-    <div class=" col-span-4 w-full h-full"></div>
-   </div>
-</x-app-layout>
+      <form>
+        <input type="text" name="name" />
+        <input type="file" name="path" />
+        <input type="text" name="type" />
+        <input type="text" name="size" />
+        <input type="text" name="canRead" />
+        <input type="text" name="canPrint" />
+        <input type="text" name="canDelete" />
+        <input type="text" name="canUpdate" />
+        <input type="text" name="canCopy" />
+      </form>
     </body>
 </html>
