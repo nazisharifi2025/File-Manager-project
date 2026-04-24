@@ -11,4 +11,17 @@ class Files extends Model
     /** @use HasFactory<\Database\Factories\FilesFactory> */
     use HasFactory;
     use SoftDeletes;
+    protected $fillable= [
+        "name",
+        "path",
+        "type",
+        "size",
+        "uploaded_by"
+    ];
+    public function user(){
+        return $this->belongsTo(User::class , "uploaded_by");
+    }
+    public function FilePermation(){
+        return $this->hasMany(file_permissions::class , 'file_id');
+    }
 }

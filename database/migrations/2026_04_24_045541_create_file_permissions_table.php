@@ -13,6 +13,15 @@ return new class extends Migration
     {
         Schema::create('file_permissions', function (Blueprint $table) {
             $table->id();
+            $table->foreignId('file_id')->constrained()->cascadeOnDelete();
+            $table->foreignId('user_id')->constrained()->cascadeOnDelete();
+           
+            $table->boolean('can_read')->default(false);
+            $table->boolean('can_write')->default(false);
+            $table->boolean('can_update')->default(false);
+            $table->boolean('can_delete')->default(false);
+            $table->boolean('can_print')->default(false);
+            $table->boolean('can_copy')->default(false);
             $table->timestamps();
         });
     }
