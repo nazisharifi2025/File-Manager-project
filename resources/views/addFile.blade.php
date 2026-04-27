@@ -29,7 +29,7 @@
 
         <h2 class="text-white text-2xl font-bold text-center">Upload File</h2>
         <div class=" grid grid-cols-2 gap-5">
-            <div>
+            <div class=" flex flex-col gap-3">
         <!-- name -->
         <div>
             <label class="text-gray-300 text-sm">File Name</label>
@@ -37,6 +37,12 @@
                    class="w-full mt-1 p-3 rounded-lg bg-slate-800 text-white border border-slate-700 focus:outline-none focus:ring-2 focus:ring-blue-500"/>
         </div>
 
+        <!-- type -->
+        <div>
+            <label class="text-gray-300 text-sm">Type</label>
+            <input type="text" name="type"
+                   class="w-full mt-1 p-3 rounded-lg bg-slate-800 text-white border border-slate-700"/>
+        </div>
         <!-- file upload -->
       <div class="border-2 border-dashed border-slate-600 rounded-xl p-6 text-center cursor-pointer hover:border-blue-500 transition">
 
@@ -47,13 +53,8 @@
 
     <input id="file-upload" type="file" name="path" accept="image/*" class="hidden">
 </div>
-
-        <!-- type -->
-        <div>
-            <label class="text-gray-300 text-sm">Type</label>
-            <input type="text" name="type"
-                   class="w-full mt-1 p-3 rounded-lg bg-slate-800 text-white border border-slate-700"/>
-        </div>
+</div>
+<div class=" flex flex-col gap-6">
 
         <!-- size -->
         <div>
@@ -61,8 +62,6 @@
             <input type="text" name="size"
                    class="w-full mt-1 p-3 rounded-lg bg-slate-800 text-white border border-slate-700"/>
         </div>
-    </div>
-    <div>
         <!-- user -->
         <div>
             <label class="text-gray-300 text-sm">User</label>
