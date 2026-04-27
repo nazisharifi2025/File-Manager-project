@@ -31,24 +31,24 @@
         </div>
         <h1 class=" font-bold text-white px-3 py-4">File Manager</h1>
         <div class=" flex flex-col gap-3">
-        <div class=" flex w-full gap-3 items-center font-medium text-white px-12">
+        <a href="" class=" flex w-full gap-3 items-center font-medium text-white px-12">
             <i class="fas fa-folder"></i> My Files
-        </div>
-        <div class=" flex w-full gap-3 items-center font-medium text-white px-12">
+        </a>
+        <a href="file/addFile" class=" flex w-full gap-3 items-center font-medium text-white px-12">
             <i class="fas fa-upload"></i> Upload Files
-        </div>
-        <div class=" flex w-full gap-3 items-center font-medium text-white px-12">
+        </a>
+        <a href="" class=" flex w-full gap-3 items-center font-medium text-white px-12">
            <i class="fas fa-folder-open"></i> Folders
-        </div>
-        <div class=" flex w-full gap-3 items-center font-medium text-white px-12">
+        </a>
+        <a href="" class=" flex w-full gap-3 items-center font-medium text-white px-12">
             <i class="fas fa-star"></i> Favorites
-        </div>
-        <div class=" flex w-full gap-3 items-center font-medium text-white px-12">
+        </a>
+        <a href="" class=" flex w-full gap-3 items-center font-medium text-white px-12">
            <i class="fas fa-trash"></i> Trash
-        </div>
-        <div class=" flex w-full gap-3 items-center font-medium text-white px-12">
+        </a>
+        <a href="" class=" flex w-full gap-3 items-center font-medium text-white px-12">
            <i class="fas fa-cog"></i> Settings
-        </div>
+        </a>
     </div>
     </div>
     <div class=" col-span-4 w-full h-full"></div>
