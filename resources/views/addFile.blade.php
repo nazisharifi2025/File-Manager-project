@@ -44,7 +44,7 @@
                    class="w-full mt-1 p-3 rounded-lg bg-slate-800 text-white border border-slate-700"/>
         </div>
         <!-- file upload -->
-      <div class="border-2 border-dashed border-slate-600 rounded-xl p-6 text-center cursor-pointer hover:border-blue-500 transition">
+      <div class="border-2 border-dashed border-slate-600 rounded-xl px-6 py-14 text-center cursor-pointer hover:border-blue-500 transition">
 
     <label for="file-upload" class="cursor-pointer block">
         <i class="fas fa-cloud-upload-alt text-4xl text-gray-400 mb-2"></i>
