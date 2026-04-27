@@ -24,11 +24,12 @@
     <body class="bg-slate-950 min-h-screen flex items-center justify-center">
 
     <form action="{{ URL('file/insert') }}" method="POST" enctype="multipart/form-data"
-          class="bg-slate-900 p-8 rounded-2xl shadow-xl w-full max-w-xl space-y-6">
+          class="bg-slate-900 p-8 rounded-2xl shadow-xl w-full  max-w-6xl mx-auto space-y-6">
         @csrf
 
         <h2 class="text-white text-2xl font-bold text-center">Upload File</h2>
-
+        <div class=" grid grid-cols-2 gap-5">
+            <div>
         <!-- name -->
         <div>
             <label class="text-gray-300 text-sm">File Name</label>
@@ -60,7 +61,8 @@
             <input type="text" name="size"
                    class="w-full mt-1 p-3 rounded-lg bg-slate-800 text-white border border-slate-700"/>
         </div>
-
+    </div>
+    <div>
         <!-- user -->
         <div>
             <label class="text-gray-300 text-sm">User</label>
@@ -71,18 +73,6 @@
                 @endforeach
             </select>
         </div>
-
-        {{-- <!-- file -->
-        <div>
-            <label class="text-gray-300 text-sm">File Parent</label>
-            <select name="file_id"
-                    class="w-full mt-1 p-3 rounded-lg bg-slate-800 text-white border border-slate-700">
-                @foreach ($files as $file)
-                    <option value="{{ $file->id }}">{{ $file->name }}</option>
-                @endforeach
-            </select>
-        </div> --}}
-
         <!-- permissions -->
         <div class="grid grid-cols-2 gap-4">
             <select name="canRead" class="p-2 rounded bg-slate-800 text-white">
@@ -110,7 +100,8 @@
                 <option value="0">No Copy</option>
             </select>
         </div>
-
+    </div>
+    </div>
         <!-- submit -->
         <button type="submit"
                 class="w-full bg-blue-600 hover:bg-blue-700 text-white py-3 rounded-xl font-bold transition">
