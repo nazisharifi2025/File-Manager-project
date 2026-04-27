@@ -34,7 +34,7 @@ class FilesController extends Controller
     file_permissions::create([
         "user_id"=> $request->user_id,
         "file_id"=> $file->id,
-         "can_read"=> $request->canRead == "true" ? 1 : 0,
+    "can_read"=> $request->canRead == "true" ? 1 : 0,
     "can_print"=> $request->canPrint == "true" ? 1 : 0,
     "can_delete"=> $request->canDelete == "true" ? 1 : 0,
     "can_update"=> $request->canUpdate == "true" ? 1 : 0,

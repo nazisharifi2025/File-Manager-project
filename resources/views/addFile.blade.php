@@ -72,7 +72,7 @@
             </select>
         </div>
 
-        <!-- file -->
+        {{-- <!-- file -->
         <div>
             <label class="text-gray-300 text-sm">File Parent</label>
             <select name="file_id"
@@ -81,7 +81,7 @@
                     <option value="{{ $file->id }}">{{ $file->name }}</option>
                 @endforeach
             </select>
-        </div>
+        </div> --}}
 
         <!-- permissions -->
         <div class="grid grid-cols-2 gap-4">
