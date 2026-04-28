@@ -51,7 +51,48 @@
         </a>
     </div>
     </div>
-    <div class=" col-span-4 w-full h-full"></div>
+    <div class=" col-span-4 w-full h-full">
+        <div class="grid grid-cols-3 gap-6">
+@foreach($files as $file)
+
+    <div class="bg-slate-900 rounded-2xl p-5 shadow-lg hover:scale-105 transition">
+
+        <!-- icon -->
+        <div class="text-4xl mb-3">
+            @if($file->type == 'pdf') 📄
+            @elseif($file->type == 'txt') 📝
+            @else 📁
+            @endif
+        </div>
+
+        <!-- name -->
+        <h3 class="text-white font-bold truncate">
+            {{ $file->name }}
+        </h3>
+
+        <!-- info -->
+        <p class="text-gray-400 text-sm mt-1">
+            {{ $file->type }} • {{ $file->size }} KB
+        </p>
+
+        <!-- actions -->
+        <div class="flex gap-2 mt-4">
+            <a href="{{ asset('storage/'.$file->path) }}" target="_blank"
+               class="bg-blue-500 px-3 py-1 rounded text-white text-sm">
+                View
+            </a>
+
+            <a href="{{ asset('storage/'.$file->path) }}" download
+               class="bg-green-500 px-3 py-1 rounded text-white text-sm">
+                Download
+            </a>
+        </div>
+
+    </div>
+
+@endforeach
+</div>
+    </div>
    </div>
 </x-app-layout>
     </body>
