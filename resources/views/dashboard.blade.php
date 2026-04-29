@@ -55,9 +55,12 @@
         <div class="grid grid-cols-3 gap-6 w-9/12 mx-auto">
 @foreach($files as $file)
 
-    <div class="bg-slate-900 rounded-2xl p-3 shadow-lg  transition">
+    <div class="bg-slate-900 rounded-2xl p-3 shadow-lg flex items-center justify-center  flex-col gap-2  transition">
 
         <!-- icon -->
+          <a href="{{ route('file.view', $file->id) }}"
+       class=" bg-slate-950 px-12 py-12 rounded text-white text-sm">
+    
        @php
     $ext = strtolower(pathinfo($file->path, PATHINFO_EXTENSION));
 
@@ -85,7 +88,12 @@
         $icon = 'fa-file-lines';
     }
 @endphp
-
+  </a>
+    @if(session('error'))
+    <div class="bg-red-500 text-white p-3 absolute top-0 right-0 rounded mb-4">
+        {{ session('error') }}
+    </div>
+@endif
 <div class="text-4xl mb-3 text-blue-400">
     <i class="fas {{ $icon }}"></i>
 </div>
@@ -106,15 +114,7 @@
     $permission = $file->permissions->first();
 @endphp
 
-    <a href="{{ route('file.view', $file->id) }}"
-       class="bg-blue-500 px-3 py-1 rounded text-white text-sm">
-        View
-    </a>
-    @if(session('error'))
-    <div class="bg-red-500 text-white p-3 absolute top-0 right-0 rounded mb-4">
-        {{ session('error') }}
-    </div>
-@endif
+  
 
             <a href="{{ asset('storage/'.$file->path) }}" download
                class="bg-green-500 px-3 py-1 rounded text-white text-sm">
