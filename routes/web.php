@@ -23,4 +23,8 @@ Route::middleware(IsAdmin::class)->prefix('file')->group(function () {
     Route::get('addFile', [FilesController::class, "shoingForm"]);
     Route::post('insert', [FilesController::class, 'insert']);
 });
+
+Route::get('/file/view/{id}', [FilesController::class, 'view'])
+    ->middleware('auth')
+    ->name('file.view');
 require __DIR__.'/auth.php';

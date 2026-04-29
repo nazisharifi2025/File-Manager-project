@@ -58,12 +58,37 @@
     <div class="bg-slate-900 rounded-2xl p-5 shadow-lg hover:scale-105 transition">
 
         <!-- icon -->
-        <div class="text-4xl mb-3">
-            @if($file->type == 'pdf') 📄
-            @elseif($file->type == 'txt') 📝
-            @else 📁
-            @endif
-        </div>
+       @php
+    $ext = strtolower(pathinfo($file->path, PATHINFO_EXTENSION));
+
+    $icon = 'fa-file';
+
+    if (in_array($ext, ['jpg','jpeg','png','gif','webp'])) {
+        $icon = 'fa-file-image';
+    }
+    elseif ($ext == 'pdf') {
+        $icon = 'fa-file-pdf';
+    }
+    elseif (in_array($ext, ['doc','docx'])) {
+        $icon = 'fa-file-word';
+    }
+    elseif (in_array($ext, ['xls','xlsx'])) {
+        $icon = 'fa-file-excel';
+    }
+    elseif (in_array($ext, ['mp4','mov','avi'])) {
+        $icon = 'fa-file-video';
+    }
+    elseif (in_array($ext, ['zip','rar'])) {
+        $icon = 'fa-file-archive';
+    }
+    elseif (in_array($ext, ['txt','log'])) {
+        $icon = 'fa-file-lines';
+    }
+@endphp
+
+<div class="text-4xl mb-3 text-blue-400">
+    <i class="fas {{ $icon }}"></i>
+</div>
 
         <!-- name -->
         <h3 class="text-white font-bold truncate">
@@ -77,10 +102,19 @@
 
         <!-- actions -->
         <div class="flex gap-2 mt-4">
-            <a href="{{ asset('storage/'.$file->path) }}" target="_blank"
-               class="bg-blue-500 px-3 py-1 rounded text-white text-sm">
-                View
-            </a>
+           @php
+    $permission = $file->permissions->first();
+@endphp
+
+    <a href="{{ route('file.view', $file->id) }}"
+       class="bg-blue-500 px-3 py-1 rounded text-white text-sm">
+        View
+    </a>
+    @if(session('error'))
+    <div class="bg-red-500 text-white p-3 absolute top-0 right-0 rounded mb-4">
+        {{ session('error') }}
+    </div>
+@endif
 
             <a href="{{ asset('storage/'.$file->path) }}" download
                class="bg-green-500 px-3 py-1 rounded text-white text-sm">
@@ -89,9 +123,8 @@
         </div>
 
     </div>
-
 @endforeach
-</div>
+</div>  
     </div>
    </div>
 </x-app-layout>

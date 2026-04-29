@@ -51,7 +51,7 @@
         <p class="text-gray-400">Click or Drag & Drop to Upload</p>
     </label>
 
-    <input id="file-upload" type="file" name="path"  accept=".txt,.pdf,.doc,.docx" class="hidden">
+    <input id="file-upload" type="file" name="path"  accept=".txt,.pdf,.doc,.docx,.xls,.xlsx,.ppt,.pptx" class="hidden">
 </div>
 </div>
 <div class=" flex flex-col gap-6">

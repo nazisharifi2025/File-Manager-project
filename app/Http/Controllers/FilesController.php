@@ -45,8 +45,27 @@ public function insert(fileRequest $request)
 
     return redirect('/dashboard');
 }
-    public function index(){
-        $files = Files::all();
-        return view('/dashboard' , compact('files'));
+   public function index()
+{
+    $files = Files::with(['permissions' => function($q){
+        $q->where('user_id', auth()->id());
+    }])->get();
+
+    return view('dashboard', compact('files'));
+}
+public function view($id)
+{
+    $file = Files::findOrFail($id);
+
+    $hasAccess = $file->permissions()
+        ->where('user_id', auth()->id())
+        ->where('can_read', true)
+        ->exists();
+
+    if (!$hasAccess) {
+        return redirect()->back()->with('error', 'شما اجازه دسترسی به این فایل را ندارید');
     }
+
+    return response()->file(storage_path('app/public/' . $file->path));
+}
 }

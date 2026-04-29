@@ -24,7 +24,7 @@ class fileRequest extends FormRequest
     {
         return [
         'name' => 'required|string|max:255',
-        'path' => 'required|file|mimes:txt,pdf,doc,docx|max:2048',
+        'path' => 'required|mimes:doc,docx,xls,xlsx,ppt,pptx,txt|max:2048',
         'type' => 'required|string|max:50',
         'size' => 'required|numeric|min:1',
         'user_id' => 'required|exists:users,id',
