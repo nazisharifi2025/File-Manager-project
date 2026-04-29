@@ -52,10 +52,10 @@
     </div>
     </div>
     <div class=" col-span-4 w-full h-full">
-        <div class="grid grid-cols-3 gap-6">
+        <div class="grid grid-cols-3 gap-6 w-9/12 mx-auto">
 @foreach($files as $file)
 
-    <div class="bg-slate-900 rounded-2xl p-5 shadow-lg hover:scale-105 transition">
+    <div class="bg-slate-900 rounded-2xl p-3 shadow-lg  transition">
 
         <!-- icon -->
        @php
