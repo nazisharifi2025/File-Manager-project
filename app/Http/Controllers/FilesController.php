@@ -84,6 +84,14 @@ public function update(Request $request , string $id){
         "type" => $request->type,
         "size" => $request->size,
     ]);
-   
+    $file->permissions->update([
+        "user_id"=> $request->user_id,
+        "file_id"=> $file->id,
+        "can_read"=> $request->canRead == "1",
+        "can_print"=> $request->canPrint == "1",
+        "can_delete"=> $request->canDelete == "1",
+        "can_update"=> $request->canUpdate == "1",
+        "can_copy"=> $request->canCopy == "1",
+    ]);
 }
 }
