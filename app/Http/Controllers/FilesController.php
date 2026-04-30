@@ -73,7 +73,7 @@ public function update(Request $request , string $id){
     $file =  Files::findOrFila($id);
     $path = null ;
     if($file->path){
-        Storage::disk('public')->delete();
+        Storage::disk('public')->delete($id);
     }
     if($request->hasFile('path')){
         $request->file('path')->store('files' , 'public');
@@ -93,5 +93,12 @@ public function update(Request $request , string $id){
         "can_update"=> $request->canUpdate == "1",
         "can_copy"=> $request->canCopy == "1",
     ]);
+}
+public function delete(string $id){
+    $file = Files::findOrFail($id);
+    if($file->path){
+        Storage::disk('public')->delete($id);
+    }
+    $file->delete();
 }
 }
