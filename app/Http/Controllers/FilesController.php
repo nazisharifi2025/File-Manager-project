@@ -78,6 +78,12 @@ public function update(Request $request , string $id){
     if($request->hasFile('path')){
         $request->file('path')->store('files' , 'public');
     }
-
+    $file->update([
+        "name" => $request->name,
+        "path" => $path,
+        "type" => $request->type,
+        "size" => $request->size,
+    ]);
+   
 }
 }
