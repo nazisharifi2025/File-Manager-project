@@ -9,6 +9,7 @@ use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Gate;
+use Illuminate\Support\Facades\Storage;
 
 class FilesController extends Controller
 {
@@ -67,5 +68,21 @@ public function view($id)
     }
 
     return response()->file(storage_path('app/public/' . $file->path));
+}
+public function update(Request $request , string $id){
+    $file =  Files::findOrFila($id);
+    $path = null ;
+    if($file->path){
+        Storage::disk('public')->delete();
+    }
+    if($request->hasFile('path')){
+        $request->file('path')->store('files' , 'public');
+    }
+    $file->update([
+        "name" => $request->name,
+        "path" => $path,
+        "type" => $request->type,
+        "size" => $request->size,
+    ]);
 }
 }

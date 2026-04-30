@@ -45,3 +45,8 @@ document.addEventListener("DOMContentLoaded", function () {
     });
 
 });
+let errores = document.getElementById("errores");
+setInterval(()=>{
+    errores.className.add('hidden');
+    errores.className.remove('block');
+},3000)

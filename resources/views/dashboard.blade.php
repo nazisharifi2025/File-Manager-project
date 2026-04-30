@@ -21,10 +21,10 @@
             </style>
         @endif
     </head>
-    <body  class=" bg-slate-950 min-h-screen w-full">
+    <body  class=" bg-slate-950  h-screen overflow-y-hidden  w-full">
         <x-app-layout>
-   <div class=" grid grid-cols-5 w-full gap-3 min-h-screen">
-    <div class=" bg-slate-700/60  col-span-1 w-full h-full flex-col flex">
+   <div class=" grid grid-cols-5 w-full gap-3  ">
+    <div class=" bg-slate-700/60  max-h-screen col-span-1 w-full h-full flex-col flex">
         <div class=" p-4 border-b border-slate-900 gap-2 text-white flex justify-center items-center">
         <i class="fas fa-archive text-blue-400 text-3xl"></i>
         <h1 class=" text-3xl font-bold text-center">Dashbord</h1>
@@ -51,7 +51,8 @@
         </a>
     </div>
     </div>
-    <div class=" col-span-4 w-full h-full">
+    <div class=" col-span-4 w-full h-screen overflow-y-scroll  p-12">
+        <h1 class=" text-4xl font-bold text-white my-6">Files</h1>
         <div class="grid grid-cols-3 gap-6 w-9/12 mx-auto">
 @foreach($files as $file)
 
@@ -59,7 +60,7 @@
 
         <!-- icon -->
           <a href="{{ route('file.view', $file->id) }}"
-       class=" bg-slate-950 px-12 py-12 rounded text-white text-sm">
+       class="  w-full mx-auto  flex justify-center items-center text-sm">
     
        @php
     $ext = strtolower(pathinfo($file->path, PATHINFO_EXTENSION));
@@ -88,16 +89,15 @@
         $icon = 'fa-file-lines';
     }
 @endphp
-  </a>
     @if(session('error'))
-    <div class="bg-red-500 text-white p-3 absolute top-0 right-0 rounded mb-4">
+    <div id="errores" class="bg-red-500  block text-white p-12 absolute top-32 right-1 rounded mb-4">
         {{ session('error') }}
     </div>
 @endif
-<div class="text-4xl mb-3 text-blue-400">
+<div class="text-4xl mb-3 bg-slate-950 p-3 w-6/12  h-24 flex justify-center items-center rounded text-white">
     <i class="fas {{ $icon }}"></i>
 </div>
-
+</a>
         <!-- name -->
         <h3 class="text-white font-bold truncate">
             {{ $file->name }}
@@ -114,12 +114,6 @@
     $permission = $file->permissions->first();
 @endphp
 
-  
-
-            <a href="{{ asset('storage/'.$file->path) }}" download
-               class="bg-green-500 px-3 py-1 rounded text-white text-sm">
-                Download
-            </a>
         </div>
 
     </div>
