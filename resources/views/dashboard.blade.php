@@ -34,7 +34,33 @@
         <a href="" class=" flex w-full gap-3 items-center font-medium text-white px-12">
             <i class="fas fa-folder"></i> My Files
         </a>
-        <a href="file/addFile" class=" flex w-full gap-3 items-center font-medium text-white px-12">
+        <a href="file/addFile" class=" flex relative w-full gap-3 items-center font-medium text-white px-12">
+    @if(session('error'))
+<div 
+    x-data="{ show: true }"
+    x-init="setTimeout(() => show = false, 3000)"
+    x-show="show"
+    x-transition
+    class="fixed top-24 right-5 bg-red-500 text-white px-4 py-3 rounded-lg shadow-lg flex items-center gap-3"
+>
+
+    <!-- آیکون Clipboard -->
+    <svg xmlns="http://www.w3.org/2000/svg" 
+         class="w-6 h-6" 
+         fill="none" 
+         viewBox="0 0 24 24" 
+         stroke="currentColor">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" 
+              d="M9 5h6m-6 4h6m-6 4h6M7 5h.01M7 9h.01M7 13h.01M5 3h14a2 2 0 012 2v14a2 2 0 01-2 2H5a2 2 0 01-2-2V5a2 2 0 012-2z"/>
+    </svg>
+
+    <!-- متن پیام -->
+    <span>{{ session('error') }}</span>
+
+    <!-- دکمه بستن -->
+    <button @click="show = false" class="ml-2 text-white font-bold">✕</button>
+</div>
+@endif
             <i class="fas fa-upload"></i> Upload Files
         </a>
         <a href="" class=" flex w-full gap-3 items-center font-medium text-white px-12">
@@ -53,72 +79,149 @@
     </div>
     <div class=" col-span-4 w-full h-screen overflow-y-scroll  p-12">
         <h1 class=" text-4xl font-bold text-white my-6">Files</h1>
-        <div class="grid grid-cols-3 gap-6 w-9/12 mx-auto">
-@foreach($files as $file)
+      <div class="w-12/12 mx-auto">
 
-    <div class="bg-slate-900 rounded-2xl p-3 shadow-lg flex items-center justify-center  flex-col gap-2  transition">
+<table class="w-full text-left text-sm text-white">
 
-        <!-- icon -->
-          <a href="{{ route('file.view', $file->id) }}"
-       class="  w-full mx-auto  flex justify-center items-center text-sm">
-    
-       @php
-    $ext = strtolower(pathinfo($file->path, PATHINFO_EXTENSION));
+    <thead class="border-b border-gray-500">
+        <tr>
+            <th class="p-3">File</th>
+            <th class="p-3">Name</th>
+            <th class="p-3">Type</th>
+            <th class="p-3">Size</th>
+            <th class="p-3">date</th>
+            <th class="p-3 text-center" colspan={3} >Action</th>
+        </tr>
+    </thead>
 
-    $icon = 'fa-file';
+    <tbody>
 
-    if (in_array($ext, ['jpg','jpeg','png','gif','webp'])) {
-        $icon = 'fa-file-image';
-    }
-    elseif ($ext == 'pdf') {
-        $icon = 'fa-file-pdf';
-    }
-    elseif (in_array($ext, ['doc','docx'])) {
-        $icon = 'fa-file-word';
-    }
-    elseif (in_array($ext, ['xls','xlsx'])) {
-        $icon = 'fa-file-excel';
-    }
-    elseif (in_array($ext, ['mp4','mov','avi'])) {
-        $icon = 'fa-file-video';
-    }
-    elseif (in_array($ext, ['zip','rar'])) {
-        $icon = 'fa-file-archive';
-    }
-    elseif (in_array($ext, ['txt','log'])) {
-        $icon = 'fa-file-lines';
-    }
-@endphp
-    @if(session('error'))
-    <div id="errores" class="bg-red-500  block text-white p-12 absolute top-32 right-1 rounded mb-4">
-        {{ session('error') }}
-    </div>
-@endif
-<div class="text-4xl mb-3 bg-slate-950 p-3 w-6/12  h-24 flex justify-center items-center rounded text-white">
-    <i class="fas {{ $icon }}"></i>
+        @foreach($files as $file)
+
+        @php
+            $ext = strtolower(pathinfo($file->path, PATHINFO_EXTENSION));
+
+            $icon = '/txt.jpg';
+
+            if (in_array($ext, ['jpg','jpeg','png','gif','webp'])) {
+                $icon = '/txt.jpg';
+            }
+            elseif ($ext == 'pdf') {
+                $icon = '/document.png';
+            }
+            elseif (in_array($ext, ['doc','docx'])) {
+                $icon = '/word.jpg';
+            }
+            elseif (in_array($ext, ['xls','xlsx'])) {
+                $icon = '/excel.jpg';
+            }
+            elseif (in_array($ext, ['zip','txt'])) {
+                $icon = '/txt1.jpg';
+            }
+            elseif (in_array($ext, ['ppt','pptx'])) {
+                $icon = '/powerpoint.jpg';
+            }
+        @endphp
+
+        <tr class=" hover:bg-slate-800 transition">
+
+            <!-- File Icon -->
+            <td class="p-3">
+                <a href="{{ route('file.view', $file->id) }}">
+                    <img src="{{ $icon }}" class="w-10 h-10 rounded" />
+                </a>
+            </td>
+
+            <!-- Name -->
+            <td class="p-3 font-bold">
+                {{ $file->name }}
+            </td>
+
+            <!-- Type -->
+            <td class="p-3 text-gray-300">
+                <i class="fa-regular fa-file text-blue-400"></i>
+                {{ $file->type }}
+            </td>
+
+            <!-- Size -->
+            <td class="p-3 text-gray-300">
+                <i class="fa-solid fa-weight-hanging text-green-400"></i>
+                {{ $file->size }} KB
+            </td>
+            {{-- date --}}
+              <td class="p-3 text-gray-300">
+                {{ $file->created_at }} KB
+            </td>
+            <!-- Action -->
+            <td class="p-3 text-center">
+
+                @if(auth()->id() == $file->user_id || $file->can_print)
+                    <button onclick="window.print()" 
+                        class="bg-blue-500 text-white px-3 py-1 rounded">
+                        🖨️ Print
+                    </button>
+                @else
+                    <button onclick="openPrintModal()" 
+                        class="bg-blue-300 text-white px-3 py-1 rounded">
+                        🖨️ Print
+                    </button>
+
+                    <!-- Modal -->
+                    <div id="printModal" class="hidden fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center">
+
+                        <div class="bg-white p-6 rounded-lg shadow-lg w-80 text-center">
+
+                            <h2 class="text-lg font-semibold mb-3">Access Denied</h2>
+
+                            <p class="text-gray-600 mb-4">
+                                شما نمی‌توانید این فایل را پرینت نمایید
+                            </p>
+
+                            <button onclick="closePrintModal()" class="bg-red-500 text-white px-4 py-2 rounded">
+                                بستن
+                            </button>
+
+                        </div>
+                    </div>
+
+                    <script>
+                    function openPrintModal() {
+                        document.getElementById('printModal').classList.remove('hidden');
+                    }
+
+                    function closePrintModal() {
+                        document.getElementById('printModal').classList.add('hidden');
+                    }
+                    </script>
+                @endif
+
+            </td>
+            <td class="p-3 text-gray-300 cursor-pointer">
+
+    <form action="{{ route('file.delete', $file->id) }}" method="POST">
+        @csrf
+        @method('DELETE')
+
+       <button type="submit" onclick="return confirm('آیا مطمئن هستی؟')">
+    <i class="fa-solid fa-trash text-red-500"></i>
+</button>
+
+    </form>
+
+</td>
+              <td class="p-3 text-gray-300">
+                <i class="fa-solid fa-pen-to-square text-blue-500"></i>
+            </td>
+
+        </tr>
+
+        @endforeach
+
+    </tbody>
+
+</table>
+
 </div>
-</a>
-        <!-- name -->
-        <h3 class="text-white font-bold truncate">
-            {{ $file->name }}
-        </h3>
-
-        <!-- info -->
-        <p class="text-gray-400 text-sm mt-1">
-            {{ $file->type }} • {{ $file->size }} KB
-        </p>
-
-        <!-- actions -->
-        <div class="flex gap-2 mt-4">
-           @php
-    $permission = $file->permissions->first();
-@endphp
-
-        </div>
-
-    </div>
-@endforeach
-</div>  
     </div>
    </div>
 </x-app-layout>

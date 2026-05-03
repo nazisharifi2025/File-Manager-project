@@ -20,6 +20,7 @@ class FilesController extends Controller
     }
 public function insert(fileRequest $request)
 {
+    dd($request->all());
     $path = null;
 
     if ($request->hasFile('path')) {
@@ -34,15 +35,20 @@ public function insert(fileRequest $request)
         "uploaded_by" => auth()->id(),
     ]);
 
-    file_permissions::create([
-        "user_id"=> $request->user_id,
-        "file_id"=> $file->id,
-        "can_read"=> $request->canRead == "1",
-        "can_print"=> $request->canPrint == "1",
-        "can_delete"=> $request->canDelete == "1",
-        "can_update"=> $request->canUpdate == "1",
-        "can_copy"=> $request->canCopy == "1",
-    ]);
+    if ($request->has('permissions')) {
+        foreach ($request->permissions as $userId => $permissions) {
+
+            file_permissions::create([
+                'file_id' => $file->id,
+                'user_id' => $userId,
+                'can_read' => isset($permissions['read']) ? 1 : 0,
+                'can_print' => isset($permissions['print']) ? 1 : 0,
+                'can_update' => isset($permissions['update']) ? 1 : 0,
+                'can_delete' => isset($permissions['delete']) ? 1 : 0,
+                'can_copy' => isset($permissions['copy']) ? 1 : 0,
+            ]);
+        }
+    }
 
     return redirect('/dashboard');
 }
@@ -50,10 +56,12 @@ public function insert(fileRequest $request)
 {
     $files = Files::with(['permissions' => function($q){
         $q->where('user_id', auth()->id());
-    }])->get();
+        }])->get();
+        // Gate::authorize('print' , $files);
 
     return view('dashboard', compact('files'));
 }
+
 public function view($id)
 {
     $file = Files::findOrFail($id);
@@ -94,11 +102,16 @@ public function update(Request $request , string $id){
         "can_copy"=> $request->canCopy == "1",
     ]);
 }
-public function delete(string $id){
+public function delete(string $id)
+{
     $file = Files::findOrFail($id);
-    if($file->path){
-        Storage::disk('public')->delete($id);
+
+    if ($file->path) {
+        Storage::disk('public')->delete($file->path);
     }
+
     $file->delete();
+
+    return redirect('/dashboard')->with('success', 'فایل حذف شد');
 }
 }

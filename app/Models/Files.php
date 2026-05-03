@@ -33,4 +33,20 @@ public function canRead()
         ->where('can_read', true)
         ->exists();
 }
+
+public function canPrint()
+{
+    return $this->permissions()
+        ->where('user_id', auth()->id())
+        ->where('can_print', true)
+        ->exists();
+}
+
+public function canDelete()
+{
+    return $this->permissions()
+        ->where('user_id', auth()->id())
+        ->where('can_delete', true)
+        ->exists();
+}
 }

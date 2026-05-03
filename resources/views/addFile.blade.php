@@ -23,7 +23,7 @@
     </head>
     <body class="bg-slate-950 min-h-screen flex items-center justify-center">
 
-    <form action="{{ URL('file/insert') }}" method="POST" enctype="multipart/form-data"
+    <form action="{{ url('/file/insert') }}" method="POST" enctype="multipart/form-data"
           class="bg-slate-900 p-8 rounded-2xl shadow-xl w-full  max-w-6xl mx-auto space-y-6">
         @csrf
 
@@ -62,45 +62,39 @@
             <input type="text" name="size"
                    class="w-full mt-1 p-3 rounded-lg bg-slate-800 text-white border border-slate-700"/>
         </div>
-        <!-- user -->
-        <div>
-            <label class="text-gray-300 text-sm">User</label>
-            <select name="user_id"
-                    class="w-full mt-1 p-3 rounded-lg bg-slate-800 text-white border border-slate-700">
-                @foreach ($user as $u)
-                    <option value="{{ $u->id }}">{{ $u->name }}</option>
-                @endforeach
-            </select>
-        </div>
-        <!-- permissions -->
-        <div class="grid grid-cols-2 gap-4">
-            <select name="canRead" class="p-2 rounded bg-slate-800 text-white">
-                <option value="1">Read ✔</option>
-                <option value="0">No Read</option>
-            </select>
+        {{-- start user --}}
+      <div>
+    <label class="text-gray-300 text-sm">Permissions</label>
 
-            <select name="canPrint" class="p-2 rounded bg-slate-800 text-white">
-                <option value="1">Print ✔</option>
-                <option value="0">No Print</option>
-            </select>
+    @foreach ($user as $u)
+    <div class="bg-slate-800 p-4 rounded mb-2">
+        <p class="text-white">{{ $u->name }}</p>
 
-            <select name="canDelete" class="p-2 rounded bg-slate-800 text-white">
-                <option value="1">Delete ✔</option>
-                <option value="0">No Delete</option>
-            </select>
+        <label>
+            <input type="checkbox" name="permissions[{{ $u->id }}][read]"> Read
+        </label>
 
-            <select name="canUpdate" class="p-2 rounded bg-slate-800 text-white">
-                <option value="1">Update ✔</option>
-                <option value="0">No Update</option>
-            </select>
+        <label>
+            <input type="checkbox" name="permissions[{{ $u->id }}][print]"> Print
+        </label>
 
-            <select name="canCopy" class="p-2 rounded bg-slate-800 text-white col-span-2">
-                <option value="1">Copy ✔</option>
-                <option value="0">No Copy</option>
-            </select>
-        </div>
+        <label>
+            <input type="checkbox" name="permissions[{{ $u->id }}][delete]"> Delete
+        </label>
+
+        <label>
+            <input type="checkbox" name="permissions[{{ $u->id }}][update]"> Update
+        </label>
+
+        <label>
+            <input type="checkbox" name="permissions[{{ $u->id }}][copy]"> Copy
+        </label>
     </div>
-    </div>
+    @endforeach
+
+</div> 
+{{-- end user --}}
+</div> 
         <!-- submit -->
         <button type="submit"
                 class="w-full bg-blue-600 hover:bg-blue-700 text-white py-3 rounded-xl font-bold transition">
