@@ -13,14 +13,15 @@ use Illuminate\Support\Facades\Storage;
 
 class FilesController extends Controller
 {
+    // قسمت علاوه کردن دیتا
     public function shoingForm(){
         $files = Files::all();
         $user = User::all();
         return view('addFile' , compact('files', 'user'));
     }
-public function insert(fileRequest $request)
+public function insert(Request $request)
 {
-    dd($request->all());
+    // dd($request->all());
     $path = null;
 
     if ($request->hasFile('path')) {
@@ -45,22 +46,32 @@ public function insert(fileRequest $request)
                 'can_print' => isset($permissions['print']) ? 1 : 0,
                 'can_update' => isset($permissions['update']) ? 1 : 0,
                 'can_delete' => isset($permissions['delete']) ? 1 : 0,
-                'can_copy' => isset($permissions['copy']) ? 1 : 0,
             ]);
         }
     }
 
     return redirect('/dashboard');
 }
+// قسمت نمایش دیتا 
    public function index()
 {
     $files = Files::with(['permissions' => function($q){
         $q->where('user_id', auth()->id());
         }])->get();
         // Gate::authorize('print' , $files);
+    $totalFiles = Files::count('id');
 
-    return view('dashboard', compact('files'));
+    $storageUsed = Files::sum('size'); // فرض بر byte یا KB
+
+    $newFiles = Files::whereDate('created_at' , today())->count('id');
+
+    $totalUsers = User::count('id');
+    return view('dashboard', compact('files' ,'totalFiles',
+        'storageUsed',
+        'newFiles',
+        'totalUsers'));
 }
+// قسمت نمایش فایل مورد نطر و دسترسی به آن
 
 public function view($id)
 {
@@ -77,34 +88,73 @@ public function view($id)
 
     return response()->file(storage_path('app/public/' . $file->path));
 }
-public function update(Request $request , string $id){
-    $file =  Files::findOrFila($id);
-    $path = null ;
-    if($file->path){
-        Storage::disk('public')->delete($id);
+// قسمت نمایش فایل آپدیت
+public function edit($id)
+{
+    $file = Files::with('permissions')->findOrFail($id);
+
+    return view('Update', compact('file'));
+}
+// قسمت آپدیت مردن دیتا
+public function update(Request $request, string $id)
+{
+    $file = Files::findOrFail($id);
+
+    $path = $file->path;
+
+    // 👇 اگر فایل جدید آپلود شد
+    if ($request->hasFile('path')) {
+
+        // حذف فایل قبلی
+        if ($file->path) {
+            Storage::disk('public')->delete($file->path);
+        }
+
+        // ذخیره فایل جدید
+        $path = $request->file('path')->store('files', 'public');
     }
-    if($request->hasFile('path')){
-        $request->file('path')->store('files' , 'public');
-    }
+
+    // 👇 آپدیت فایل
     $file->update([
         "name" => $request->name,
         "path" => $path,
         "type" => $request->type,
         "size" => $request->size,
     ]);
-    $file->permissions->update([
-        "user_id"=> $request->user_id,
-        "file_id"=> $file->id,
-        "can_read"=> $request->canRead == "1",
-        "can_print"=> $request->canPrint == "1",
-        "can_delete"=> $request->canDelete == "1",
-        "can_update"=> $request->canUpdate == "1",
-        "can_copy"=> $request->canCopy == "1",
-    ]);
+
+    // 👇 آپدیت permissions (درست و حرفه‌ای)
+   
+    if ($request->has('permissions')) {
+        foreach ($request->permissions as $userId => $permissions) {
+        file_permissions::updateOrCreate(
+            [
+                'file_id' => $file->id,
+                'user_id' => $userId,
+            ],
+            [
+                'can_read' => isset($permissions['read']),
+                'can_print' => isset($permissions['print']),
+                'can_delete' => isset($permissions['delete']),
+                'can_update' => isset($permissions['update']),
+            ]
+        );
+    }
+    }
+
+    return redirect('/dashboard')->with('success', 'فایل آپدیت شد ✅');
 }
+// قسمت دلینت کردن دیتا
 public function delete(string $id)
 {
     $file = Files::findOrFail($id);
+
+    $permission = file_permissions::where('file_id', $id)
+        ->where('user_id', auth()->id())
+        ->first();
+
+    if (!$permission || !$permission->can_delete) {
+        return redirect()->back()->with('error', 'شما اجازه حذف این فایل را ندارید ❌');
+    }
 
     if ($file->path) {
         Storage::disk('public')->delete($file->path);
@@ -112,6 +162,20 @@ public function delete(string $id)
 
     $file->delete();
 
-    return redirect('/dashboard')->with('success', 'فایل حذف شد');
+    return redirect('/dashboard')->with('success', 'فایل حذف شد ✅');
+}
+public function print($id)
+{
+    $file = Files::findOrFail($id);
+
+    $permission = $file->permissions()
+    ->where('user_id', auth()->id())
+    ->first();
+
+    if (!$permission || !$permission->can_print) {
+        return redirect()->back()->with('error', 'شما اجازه پرینت این فایل را ندارید ❌');
+    }
+
+    return view('prints', compact('file'));
 }
 }

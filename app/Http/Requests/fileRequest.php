@@ -28,11 +28,6 @@ class fileRequest extends FormRequest
         'type' => 'required|string|max:50',
         'size' => 'required|numeric|min:1',
         'user_id' => 'required|exists:users,id',
-        'canRead' => 'required|boolean',
-        'canPrint' => 'required|boolean',
-        'canDelete' => 'required|boolean',
-        'canUpdate' => 'required|boolean',
-        'canCopy' => 'required|boolean',
         ];
     }
 }

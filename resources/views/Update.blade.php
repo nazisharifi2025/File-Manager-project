@@ -22,84 +22,100 @@
         @endif
     </head>
     <body class="bg-slate-950 min-h-screen flex items-center justify-center">
+        <form action="{{ url('/file/' . $file->id) . '/update' }}" method="POST" enctype="multipart/form-data"
+      class="bg-slate-900 p-8 rounded-2xl shadow-xl w-full max-w-6xl mx-auto space-y-6">
 
-    <form action="{{ URL('/file/insert') }}" method="POST" enctype="multipart/form-data"
-          class="bg-slate-900 p-8 rounded-2xl shadow-xl w-full  max-w-6xl mx-auto space-y-6">
-        @csrf
+    @csrf
 
-        <h2 class="text-white text-2xl font-bold text-center">Upload File</h2>
-        <div class=" grid grid-cols-2 gap-5">
-            <div class=" flex flex-col gap-3">
-        <!-- name -->
-        <div>
-            <label class="text-gray-300 text-sm">File Name</label>
-            <input type="text" name="name"
-                   class="w-full mt-1 p-3 rounded-lg bg-slate-800 text-white border border-slate-700 focus:outline-none focus:ring-2 focus:ring-blue-500"/>
+    <h2 class="text-white text-2xl font-bold text-center">Update File</h2>
+
+    <div class="grid grid-cols-2 gap-5">
+
+        {{-- LEFT SIDE --}}
+        <div class="flex flex-col gap-3">
+
+            <!-- name -->
+            <div>
+                <label class="text-gray-300 text-sm">File Name</label>
+                <input type="text" name="name" value="{{ $file->name }}"
+                       class="w-full mt-1 p-3 rounded-lg bg-slate-800 text-white border border-slate-700"/>
+            </div>
+
+            <!-- type -->
+            <div>
+                <label class="text-gray-300 text-sm">Type</label>
+                <input type="text" name="type" value="{{ $file->type }}"
+                       class="w-full mt-1 p-3 rounded-lg bg-slate-800 text-white border border-slate-700"/>
+            </div>
+
+            <!-- file upload -->
+            <div class="border-2 border-dashed border-slate-600 rounded-xl px-6 py-14 text-center cursor-pointer hover:border-blue-500 transition">
+
+                <label for="file-upload" class="cursor-pointer block">
+                    <i class="fas fa-cloud-upload-alt text-4xl text-gray-400 mb-2"></i>
+                    <p class="text-gray-400">Click or Replace File</p>
+                </label>
+
+                <input id="file-upload" type="file" name="path"
+                       class="hidden">
+            </div>
+
         </div>
 
-        <!-- type -->
-        <div>
-            <label class="text-gray-300 text-sm">Type</label>
-            <input type="text" name="type"
-                   class="w-full mt-1 p-3 rounded-lg bg-slate-800 text-white border border-slate-700"/>
+        {{-- RIGHT SIDE --}}
+        <div class="flex flex-col gap-6">
+
+            <!-- size -->
+            <div>
+                <label class="text-gray-300 text-sm">Size</label>
+                <input type="text" name="size" value="{{ $file->size }}"
+                       class="w-full mt-1 p-3 rounded-lg bg-slate-800 text-white border border-slate-700"/>
+            </div>
+
+            {{-- PERMISSIONS --}}
+            <div>
+                <label class="text-gray-300 text-sm">Permissions</label>
+
+                @foreach ($file->permissions as $p)
+                <div class="bg-slate-800 p-4 rounded mb-2 text-white">
+
+                    <p>User ID: {{ $p->user_id }}</p>
+
+                    <label>
+                        <input type="checkbox" name="canRead" {{ $p->can_read ? 'checked' : '' }}>
+                        Read
+                    </label>
+
+                    <label>
+                        <input type="checkbox" name="canPrint" {{ $p->can_print ? 'checked' : '' }}>
+                        Print
+                    </label>
+
+                    <label>
+                        <input type="checkbox" name="canDelete" {{ $p->can_delete ? 'checked' : '' }}>
+                        Delete
+                    </label>
+
+                    <label>
+                        <input type="checkbox" name="canUpdate" {{ $p->can_update ? 'checked' : '' }}>
+                        Update
+                    </label>
+
+                </div>
+                @endforeach
+
+            </div>
+
         </div>
-        <!-- file upload -->
-      <div class="border-2 border-dashed border-slate-600 rounded-xl px-6 py-14 text-center cursor-pointer hover:border-blue-500 transition">
-
-    <label for="file-upload" class="cursor-pointer block">
-        <i class="fas fa-cloud-upload-alt text-4xl text-gray-400 mb-2"></i>
-        <p class="text-gray-400">Click or Drag & Drop to Upload</p>
-    </label>
-
-    <input id="file-upload" type="file" name="path"  accept=".txt,.pdf,.doc,.docx,.xls,.xlsx,.ppt,.pptx" class="hidden">
-</div>
-</div>
-<div class=" flex flex-col gap-6">
-
-        <!-- size -->
-        <div>
-            <label class="text-gray-300 text-sm">Size</label>
-            <input type="text" name="size"
-                   class="w-full mt-1 p-3 rounded-lg bg-slate-800 text-white border border-slate-700"/>
-        </div>
-        {{-- start user --}}
-      <div>
-    <label class="text-gray-300 text-sm">Permissions</label>
-
-    @foreach ($user as $u)
-    <div class="bg-slate-800 p-4 rounded mb-2">
-        <p class="text-white">{{ $u->name }}</p>
-
-        <label>
-            <input type="checkbox" name="permissions[{{ $u->id }}][read]"> Read
-        </label>
-
-        <label>
-            <input type="checkbox" name="permissions[{{ $u->id }}][print]"> Print
-        </label>
-
-        <label>
-            <input type="checkbox" name="permissions[{{ $u->id }}][delete]"> Delete
-        </label>
-
-        <label>
-            <input type="checkbox" name="permissions[{{ $u->id }}][update]"> Update
-        </label>
 
     </div>
-    @endforeach
 
-</div> 
-{{-- end user --}}
-</div> 
-        <!-- submit -->
-        <button type="submit"
-         onclick="alert('clicked')"
-                class="w-full bg-blue-600 hover:bg-blue-700 text-white py-3 rounded-xl font-bold transition">
-            Upload File
-        </button>
+    <!-- submit -->
+    <button type="submit"
+            class="w-full bg-green-600 hover:bg-green-700 text-white py-3 rounded-xl font-bold transition">
+        Update File
+    </button>
 
-    </form>
-
+</form>
 </body>
 </html>

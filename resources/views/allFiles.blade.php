@@ -32,7 +32,7 @@
         <h1 class=" font-bold text-white px-3 py-4">File Manager</h1>
         <div class=" flex flex-col gap-3">
         <a href="/dashboard" class=" flex w-full gap-3 items-center font-medium text-white px-12">
-            <i class="fas fa-folder"></i> My Files
+            <i class="fas fa-folder"></i> All Files
         </a>
         <a href="file/addFile" class=" flex relative w-full gap-3 items-center font-medium text-white px-12">
     @if(session('error'))
@@ -77,70 +77,9 @@
         </a>
     </div>
     </div>
-    <div class=" col-span-4 w-full h-screen overflow-y-scroll no-scrollbar  px-12 pb-24">
-        <div class=" h-fit w-full  flex flex-col gap-3">
-            <h1 class=" text-4xl font-bold text-white my-6">Overview of Storage</h1>
-            <div class="grid grid-cols-1 md:grid-cols-4 gap-4 mb-6">
-
-  <!-- Total Files -->
-  <div class="bg-slate-800 hover:bg-slate-700 transition rounded-2xl p-5 shadow-lg flex items-center gap-4">
-    
-    <div class="bg-blue-600/20 p-3 rounded-xl">
-      <i class="fa-solid fa-folder text-blue-400 text-xl"></i>
-    </div>
-
-    <div>
-      <p class="text-gray-400 text-sm">Total Files</p>
-      <h2 class="text-white text-2xl font-bold">{{ $totalFiles }}</h2>
-    </div>
-
-  </div>
-
-  <!-- Storage -->
-  <div class="bg-slate-800 hover:bg-slate-700 transition rounded-2xl p-5 shadow-lg flex items-center gap-4">
-
-    <div class="bg-green-600/20 p-3 rounded-xl">
-      <i class="fa-solid fa-database text-green-400 text-xl"></i>
-    </div>
-
-    <div>
-      <p class="text-gray-400 text-sm">Storage Used</p>
-      <h2 class="text-white text-2xl font-bold">{{ $storageUsed }} GB</h2>
-    </div>
-
-  </div>
-
-  <!-- New Files -->
-  <div class="bg-slate-800 hover:bg-slate-700 transition rounded-2xl p-5 shadow-lg flex items-center gap-4">
-
-    <div class="bg-purple-600/20 p-3 rounded-xl">
-      <i class="fa-solid fa-file-circle-plus text-purple-400 text-xl"></i>
-    </div>
-
-    <div>
-      <p class="text-gray-400 text-sm">New Files</p>
-      <h2 class="text-white text-2xl font-bold">{{ $newFiles }}</h2>
-    </div>
-
-  </div>
-
-  <!-- Users -->
-  <div class="bg-slate-800 hover:bg-slate-700 transition rounded-2xl p-5 shadow-lg flex items-center gap-4">
-
-    <div class="bg-orange-600/20 p-3 rounded-xl">
-      <i class="fa-solid fa-users text-orange-400 text-xl"></i>
-    </div>
-
-    <div>
-      <p class="text-gray-400 text-sm">Users</p>
-      <h2 class="text-white text-2xl font-bold">{{ $totalUsers }}</h2>
-    </div>
-
-  </div>
-
-</div>
-        </div>
-        <h1 class=" text-4xl font-bold text-white my-6">Overview Storage</h1>
+    <div class=" col-span-4 w-full h-screen overflow-y-auto no-scrollbar  p-12">
+        <div class=" h-screen w-full p-12 flex flex-col gap-3"></div>
+        <h1 class=" text-4xl font-bold text-white my-6">Files</h1>
       <div class="w-12/12 mx-auto">
 
 <table class="w-full text-left text-sm text-white">

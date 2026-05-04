@@ -19,16 +19,17 @@ Route::middleware('auth')->group(function () {
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
-Route::prefix('file')->group(function () {
+Route::middleware(IsAdmin::class)->prefix('file')->group(function () {
     Route::get('addFile', [FilesController::class, "shoingForm"]);
     Route::post('insert', [FilesController::class, 'insert']);
 });
 
-
+Route::get('/file/print/{id}', [FilesController::class, 'print']);
 Route::get('/file/view/{id}', [FilesController::class, 'view'])
     ->middleware('auth')
     ->name('file.view');
     Route::get('/files/{file}/print', [FilesController::class, 'print'])->name('files.print');
     Route::delete('/file/{id}', [FilesController::class, 'delete'])->name('file.delete');
-    Route::get('/file/{id}/edit', [FilesController::class, 'edit'])->name('file.edit');
+Route::get('/file/{id}/edit', [FilesController::class, 'edit'])->name('file.edit');
+Route::post('/file/{id}/update', [FilesController::class, 'update'])->name('file.update');
 require __DIR__.'/auth.php';

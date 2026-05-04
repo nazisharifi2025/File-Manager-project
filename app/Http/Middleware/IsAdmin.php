@@ -21,6 +21,6 @@ class IsAdmin
     return $next($request);
 }
 
-return redirect('/dashboard')->with('error', 'Only admin can access this section.');
+return redirect('/dashboard')->with('error', 'فقط ادمین میتواند فایل را آپلود نماید');
 }
 }
