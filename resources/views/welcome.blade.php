@@ -21,84 +21,179 @@
         @endif
     </head>
     <body  class=" bg-slate-950 min-h-screen w-full">
-       <header class="w-full py-5 px-3 fixed flex items-center justify-between backdrop-blur-md">
+       <header class="w-full py-5 px-4 fixed top-0 left-0 flex items-center justify-between backdrop-blur-md z-50">
 
-    <div class="text-white flex items-center gap-1">
-        <h2 class="text-4xl">📂</h2>
-        <h1 class="text-2xl font-bold font-serif">MyBox</h1>
+    <!-- Logo -->
+    <div class="text-white flex items-center gap-2">
+        <h2 class="text-3xl">📂</h2>
+        <h1 class="text-xl md:text-2xl font-bold font-serif">MyBox</h1>
     </div>
 
-    <ul class="flex justify-center text-xl gap-12 items-center font-medium text-white">
-        <li><a class=" hover:border-b" href="/">Home</a></li>
-        <li><a class=" hover:border-b" href="#how">How it Works</a></li>
-        <li><a class=" hover:border-b" href="#faq">Faq</a></li>
-        <li><a class=" hover:border-b" href="/">Features</a></li>
+    <!-- Desktop Menu -->
+    <ul class="hidden md:flex text-lg gap-10 items-center font-medium text-white">
+        <li><a class="hover:border-b" href="/">Home</a></li>
+        <li><a class="hover:border-b" href="#how">How it Works</a></li>
+        <li><a class="hover:border-b" href="#faq">Faq</a></li>
+        <li><a class="hover:border-b" href="/">Features</a></li>
     </ul>
 
-    <div>
+    <!-- Right Side -->
+    <div class="hidden md:flex">
         @if (Route::has('login'))
             <nav class="flex items-center gap-4 text-white">
                 @auth
                     <a href="{{ url('/dashboard') }}">Dashboard</a>
                 @else
-                    <a class=" bg-gray-500/60 rounded-md px-6 py-2" href="{{ route('login') }}">Log in</a>
+                    <a class="bg-gray-500/60 rounded-md px-4 py-1" href="{{ route('login') }}">Log in</a>
 
                     @if (Route::has('register'))
-                        <a class=" px-6 py-2 border rounded-md" href="{{ route('register') }}">Register</a>
+                        <a class="px-4 py-1 border rounded-md" href="{{ route('register') }}">Register</a>
                     @endif
                 @endauth
             </nav>
         @endif
     </div>
 
+    <!-- Mobile Menu Button -->
+    <button id="menu-btn" class="md:hidden text-white text-2xl">
+        <i class="fas fa-bars"></i>
+    </button>
+
 </header>
+
+<!-- Mobile Menu -->
+<div id="mobile-menu" class="hidden fixed top-0 left-0 w-full h-full bg-black/90 backdrop-blur-md flex flex-col items-center justify-center gap-8 text-white text-xl z-40">
+
+    <a href="/" onclick="toggleMenu()">Home</a>
+    <a href="#how" onclick="toggleMenu()">How it Works</a>
+    <a href="#faq" onclick="toggleMenu()">Faq</a>
+    <a href="/" onclick="toggleMenu()">Features</a>
+
+    @if (Route::has('login'))
+        @auth
+            <a href="{{ url('/dashboard') }}">Dashboard</a>
+        @else
+            <a href="{{ route('login') }}">Log in</a>
+            @if (Route::has('register'))
+                <a href="{{ route('register') }}">Register</a>
+            @endif
+        @endauth
+    @endif
+
+</div>
+
+<!-- Script -->
+<script id="menu_script">
+    const btn = document.getElementById('menu-btn');
+    const menu = document.getElementById('mobile-menu');
+
+    function toggleMenu() {
+        menu.classList.toggle('hidden');
+    }
+
+    btn.addEventListener('click', toggleMenu);
+</script>
 {{-- slider --}}
-      <div class=" h-screen w-full grid grid-cols-2 ">
-        <div class=" flex h-fit  text-white my-3 w-full flex-col gap-8 justify-center  mt-36 p-10">
-            <h1 class=" text-6xl font-serif font-bold">Your secure space for all your files 📂</h1>
-            <p class=" text-gray-400 text-xl">Upload, organize and access your files from anywhere. Fast, simple and secure file management with MyBox.</p>
-            <div class=" flex gap-6 ">
-                <button class=" px-6 py-2 font-bold rounded-md hover:bg-blue-300 bg-blue-600">Get Started</button>
-                <button class=" px-6 py-2 rounded-md ring-1">Explore Features</button>
-            </div>
+    <div class="min-h-screen w-full grid grid-cols-1 md:grid-cols-2 gap-10 items-center px-6 md:px-12">
+
+    <!-- LEFT -->
+    <div class="text-white flex flex-col gap-6 justify-center ">
+
+        <h1 class="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-serif font-bold leading-tight">
+            Your secure space for all your files 📂
+        </h1>
+
+        <p class="text-gray-400 text-base sm:text-lg md:text-xl">
+            Upload, organize and access your files from anywhere. Fast, simple and secure file management with MyBox.
+        </p>
+
+        <div class="flex flex-col sm:flex-row gap-4">
+            <button class="px-6 py-2 font-bold rounded-md bg-blue-600 hover:bg-blue-500 transition">
+                Get Started
+            </button>
+            <button class="px-6 py-2 rounded-md ring-1 ring-white/30 hover:bg-white/10 transition">
+                Explore Features
+            </button>
         </div>
-        <div >
-            <img src="/Image folder-cuate.svg" class=" w-11/12" />
+
+    </div>
+
+    <!-- RIGHT -->
+    <div class="flex justify-center">
+        <img src="/Image folder-cuate.svg"
+             class="w-10/12 sm:w-8/12 md:w-full max-w-md">
+    </div>
+
+</div>
+
+
+<!-- HOW SECTION -->
+<section id="how" class="w-full my-16 px-6 text-white flex flex-col gap-10 items-center">
+
+    <!-- TITLE -->
+    <div class="flex flex-col items-center gap-3 max-w-2xl text-center">
+        <h1 class="text-2xl sm:text-3xl font-bold">How MyBox Works</h1>
+        <p class="text-gray-400 text-sm sm:text-base">
+            Upload, organize, and access your files in just a few simple steps.
+            MyBox makes file management fast, secure, and easy.
+        </p>
+    </div>
+
+    <!-- CARDS -->
+    <div class="grid gap-8 max-w-6xl w-full grid-cols-1 sm:grid-cols-2 lg:grid-cols-3">
+
+        <!-- CARD 1 -->
+        <div class="flex flex-col gap-4 items-center text-center p-4 rounded-xl hover:bg-white/5 transition">
+            <img src="/Image upload-amico.svg" class="h-32 w-32 sm:h-40 sm:w-40" />
+            <h1 class="text-xl sm:text-2xl font-bold">Upload Your Files</h1>
+            <p class="text-gray-300 text-sm sm:text-base">
+                Drag and drop your files or select them from your device.
+            </p>
         </div>
-      </div>
-      <section id="how" class=" h-fit my-12 w-full flex flex-col gap-6  text-white items-center">
-        <div class=" w-full  flex flex-col justify-center items-center gap-2">
-        <h1 class=" text-3xl text-center font-bold font-sans">How MyBox Works</h1>
-        <p class=" text-gray-300/60 text-center w-9/12">Upload, organize, and access your files in just a few simple steps. MyBox makes file management fast, secure, and easy for everyone.</p>
+
+        <!-- CARD 2 -->
+        <div class="flex flex-col gap-4 items-center text-center p-4 rounded-xl hover:bg-white/5 transition">
+            <img src="/Organizing projects-rafiki.svg" class="h-32 w-32 sm:h-40 sm:w-40" />
+            <h1 class="text-xl sm:text-2xl font-bold">Organize Easily</h1>
+            <p class="text-gray-300 text-sm sm:text-base">
+                Create folders, rename files, and keep everything structured.
+            </p>
         </div>
-        <div class=" grid gap-5 max-w-5xl mx-auto grid-cols-3">
-            <div class=" flex flex-col gap-4 items-center justify-center p-2">
-                <img src="/Image upload-amico.svg" class=" h-40 w-40" />
-                <h1 class=" text-2xl font-bold">Upload Your Files</h1>
-                <p class=" text-center w-9/12 text-gray-200 font-medium">Drag and drop your files or section them from your device. MyBox supports multiple file types.</p>
-            </div>
-            <div class=" flex flex-col gap-4 items-center justify-center p-2">
-                <img src="/Organizing projects-rafiki.svg" class=" h-40 w-40" />
-                <h1 class=" text-2xl font-bold">Organize Easily</h1>
-                <p class=" text-center w-9/12 text-gray-200 font-medium">Create folders, rename files, and keep everything structured in one place.</p>
-            </div>
-            <div class=" flex flex-col gap-4 items-center justify-center p-2">
-                <img src="/Real-time Sync-amico.svg" class=" h-40 w-40" />
-                <h1 class=" text-2xl font-bold">Access Anywhere</h1>
-                <p class=" text-center w-9/12 text-gray-200 font-medium">Your files are stored securely and can be accessed anytime from any device.</p>
-            </div>
+
+        <!-- CARD 3 -->
+        <div class="flex flex-col gap-4 items-center text-center p-4 rounded-xl hover:bg-white/5 transition">
+            <img src="/Real-time Sync-amico.svg" class="h-32 w-32 sm:h-40 sm:w-40" />
+            <h1 class="text-xl sm:text-2xl font-bold">Access Anywhere</h1>
+            <p class="text-gray-300 text-sm sm:text-base">
+                Access your files anytime from any device securely.
+            </p>
         </div>
-    </section>
+
+    </div>
+
+</section>
       {{-- faq start --}}
       <section id="faq" class="max-w-6xl mx-auto my-8 grid grid-cols-1 text-white md:grid-cols-2 gap-10 items-center">
 
     <!-- تصویر -->
-    <div class="flex justify-center h-full flex-col gap-4 relative">
-        <img src="/Questions-pana.svg" class=" h-32 w-32 top-0 left-0 absolute" />
-       <h1 class=" text-6xl font-bold">Got Questions? We’ve Got Answers</h1>
-    <p class=" text-xl text-gray-400">Learn everything about MyBox, from uploading and managing your files to security, storage limits, and access across all devices.</p>
-    </div>
+    <div class="relative flex flex-col items-center text-center gap-6 py-16 px-4 text-white">
 
+    <!-- image -->
+    <img src="/Questions-pana.svg"
+         class="h-40 w-40 md:h-52 md:w-52 opacity-90" />
+
+    <!-- title -->
+    <h1 class="text-3xl md:text-5xl font-bold leading-tight">
+        Got Questions? We’ve Got Answers
+    </h1>
+
+    <!-- description -->
+    <p class="text-gray-400 text-base md:text-lg max-w-2xl">
+        Learn everything about MyBox, from uploading and managing your files to security,
+        storage limits, and access across all devices.
+    </p>
+
+</div>
     <!-- FAQ -->
   <div class="space-y-4">
 
@@ -171,12 +266,31 @@
 </div>
 </section>
       {{-- footer start --}}
-      <footer class=" w-full border-t border-gray-200/30 text-white px-6 py-4 flex justify-center items-center  flex-col">
-        <h1 class="text-xl font-bold">© 2026 MyBox. All rights reserved.</h1>
-        <p class=" text-center text-gray-200  ">MyBox is a modern file management system that helps you store, organize and access your files securely anytime, anywhere.
+     <footer class="w-full border-t border-gray-200/20 text-white px-6 py-8">
 
-Built with Laravel & modern web technologies.</p>
-      </footer>
+    <div class="max-w-5xl mx-auto flex flex-col items-center text-center gap-4">
+
+        <!-- title -->
+        <h1 class="text-lg md:text-xl font-bold">
+            © 2026 MyBox. All rights reserved.
+        </h1>
+
+        <!-- description -->
+        <p class="text-sm md:text-base text-gray-300 leading-relaxed max-w-2xl">
+            MyBox is a modern file management system that helps you store, organize and access your files securely anytime, anywhere.
+            Built with Laravel & modern web technologies.
+        </p>
+
+        <!-- optional links -->
+        <div class="flex gap-6 text-sm text-gray-400 mt-2">
+            <a href="#" class="hover:text-white transition">Privacy</a>
+            <a href="#" class="hover:text-white transition">Terms</a>
+            <a href="#" class="hover:text-white transition">Contact</a>
+        </div>
+
+    </div>
+
+</footer>
         @if (Route::has('login'))
             <div class="h-14.5 hidden lg:block"></div>
         @endif

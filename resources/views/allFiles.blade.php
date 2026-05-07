@@ -31,8 +31,12 @@
         </div>
         <h1 class=" font-bold text-white px-3 py-4">File Manager</h1>
         <div class=" flex flex-col gap-3">
+            <a href="/" class="flex w-full gap-3 items-center font-medium text-white px-12 py-2 rounded-lg hover:bg-slate-700 transition">
+            <i class="fas fa-home text-blue-400"></i>
+            <span>Landing</span>
+            </a>
         <a href="/dashboard" class=" flex w-full gap-3 items-center font-medium text-white px-12">
-            <i class="fas fa-folder"></i> All Files
+            <i class="fas fa-folder"></i> My Files
         </a>
         <a href="file/addFile" class=" flex relative w-full gap-3 items-center font-medium text-white px-12">
     @if(session('error'))
@@ -63,8 +67,8 @@
 @endif
             <i class="fas fa-upload"></i> Upload Files
         </a>
-        <a href="" class=" flex w-full gap-3 items-center font-medium text-white px-12">
-           <i class="fas fa-folder-open"></i> Folders
+        <a href="/all-files" class=" flex w-full gap-3 items-center font-medium text-white px-12">
+           <i class="fas fa-folder-open"></i> All Files
         </a>
         <a href="" class=" flex w-full gap-3 items-center font-medium text-white px-12">
             <i class="fas fa-star"></i> Favorites
@@ -78,116 +82,66 @@
     </div>
     </div>
     <div class=" col-span-4 w-full h-screen overflow-y-auto no-scrollbar  p-12">
-        <div class=" h-screen w-full p-12 flex flex-col gap-3"></div>
-        <h1 class=" text-4xl font-bold text-white my-6">Files</h1>
+        <h1 class=" text-4xl font-bold text-white my-6">All Files</h1>
       <div class="w-12/12 mx-auto">
+        <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-6 p-6">
 
-<table class="w-full text-left text-sm text-white">
+@foreach($files as $file)
+<div class="group relative bg-slate-800/70 backdrop-blur-xl border border-slate-700 rounded-2xl p-4 shadow-lg hover:shadow-2xl hover:-translate-y-1 transition duration-300">
 
-    <thead class="border-b border-gray-500">
-        <tr>
-            <th class="p-3">File</th>
-            <th class="p-3">Name</th>
-            <th class="p-3">Type</th>
-            <th class="p-3">Size</th>
-            <th class="p-3">date</th>
-            <th class="p-3 text-center" colspan={3} >Action</th>
-        </tr>
-    </thead>
+    <!-- Glow Effect -->
+    <div class="absolute inset-0 rounded-2xl bg-gradient-to-br from-blue-500/10 to-purple-500/10 opacity-0 group-hover:opacity-100 transition"></div>
 
-    <tbody>
+    <!-- Top Section -->
+    <div class="relative flex justify-between items-center mb-4">
 
-        @foreach($files as $file)
+        <!-- File Type Badge -->
+        <span class="text-xs px-2 py-1 rounded-md bg-slate-700 text-gray-300 uppercase">
+            {{ pathinfo($file->path, PATHINFO_EXTENSION) }}
+        </span>
 
-        @php
-            $ext = strtolower(pathinfo($file->path, PATHINFO_EXTENSION));
+        <!-- Fake menu icon (UI only 😄) -->
+        <i class="fa-solid fa-ellipsis text-gray-500"></i>
+    </div>
 
-            $icon = '/txt.jpg';
+    <!-- Icon -->
+    <div class="relative flex justify-center mb-4">
+        @if(str_ends_with($file->path, '.pdf'))
+            <i class="fa-solid fa-file-pdf text-red-500 text-5xl drop-shadow-lg"></i>
+        @elseif(str_ends_with($file->path, '.docx'))
+            <i class="fa-solid fa-file-word text-blue-500 text-5xl"></i>
+        @elseif(str_ends_with($file->path, '.xlsx'))
+            <i class="fa-solid fa-file-excel text-green-500 text-5xl"></i>
+        @else
+            <i class="fa-solid fa-file text-gray-400 text-5xl"></i>
+        @endif
+    </div>
 
-            if (in_array($ext, ['jpg','jpeg','png','gif','webp'])) {
-                $icon = '/txt.jpg';
-            }
-            elseif ($ext == 'pdf') {
-                $icon = '/document.png';
-            }
-            elseif (in_array($ext, ['doc','docx'])) {
-                $icon = '/word.jpg';
-            }
-            elseif (in_array($ext, ['xls','xlsx'])) {
-                $icon = '/excel.jpg';
-            }
-            elseif (in_array($ext, ['zip','txt'])) {
-                $icon = '/txt1.jpg';
-            }
-            elseif (in_array($ext, ['ppt','pptx'])) {
-                $icon = '/powerpoint.jpg';
-            }
-        @endphp
+    <!-- Name -->
+    <h3 class="text-white text-sm font-semibold text-center truncate group-hover:text-blue-400 transition">
+        {{ $file->name }}
+    </h3>
 
-        <tr class=" hover:bg-slate-800 transition">
+    <!-- Divider -->
+    <div class="w-full h-px bg-slate-700 my-3"></div>
 
-            <!-- File Icon -->
-            <td class="p-3">
-                <a href="{{ route('file.view', $file->id) }}">
-                    <img src="{{ $icon }}" class="w-10 h-10 rounded" />
-                </a>
-            </td>
+    <!-- Footer -->
+    <div class="flex justify-between items-center text-xs text-gray-400">
 
-            <!-- Name -->
-            <td class="p-3 font-bold">
-                {{ $file->name }}
-            </td>
+        <!-- Date -->
+        <span>
+            {{ \Carbon\Carbon::parse($file->created_at)->diffForHumans() }}
+        </span>
 
-            <!-- Type -->
-            <td class="p-3 text-gray-300">
-                <i class="fa-regular fa-file text-blue-400"></i>
-                {{ $file->type }}
-            </td>
+        <!-- Size -->
+        <span class="text-gray-500">
+            {{ $file->size }} KB
+        </span>
 
-            <!-- Size -->
-            <td class="p-3 text-gray-300">
-                <i class="fa-solid fa-weight-hanging text-green-400"></i>
-                {{ $file->size }} KB
-            </td>
-            {{-- date --}}
-              <td class="p-3 text-gray-300">
-                {{ $file->created_at }} KB
-            </td>
-            <!-- Action -->
-            <td class="p-3 text-center">
-                <form action="{{ url('/file/print/'.$file->id) }}" method="GET">
-    <button type="submit"
-        class="bg-blue-500 text-white px-3 py-1 rounded">
-        🖨️ Print
-    </button>
-</form>
-            </td>
-            <td class="p-3 text-gray-300 cursor-pointer">
+    </div>
 
-    <form action="{{ route('file.delete', $file->id) }}" method="POST">
-        @csrf
-        @method('DELETE')
-
-       <button type="submit" onclick="return confirm('آیا مطمئن هستی؟')">
-    <i class="fa-solid fa-trash text-red-500"></i>
-</button>
-
-    </form>
-
-</td>
-              <td class="p-3 text-gray-300">
-                <a href="{{ url('/file/' . $file->id . '/edit') }}">
-                <i class="fa-solid fa-pen-to-square text-blue-500"></i>
-                </a>
-            </td>
-
-        </tr>
-
-        @endforeach
-
-    </tbody>
-
-</table>
+</div>
+@endforeach
 
 </div>
     </div>

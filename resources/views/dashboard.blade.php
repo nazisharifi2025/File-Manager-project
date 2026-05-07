@@ -31,7 +31,11 @@
         </div>
         <h1 class=" font-bold text-white px-3 py-4">File Manager</h1>
         <div class=" flex flex-col gap-3">
-        <a href="/dashboard" class=" flex w-full gap-3 items-center font-medium text-white px-12">
+        <a href="/" class="flex w-full gap-3 items-center font-medium text-white px-12 py-2 rounded-lg hover:bg-slate-700 transition">
+            <i class="fas fa-home text-blue-400"></i>
+            <span>Landing</span>
+            </a>
+            <a href="/dashboard" class=" flex w-full gap-3 items-center font-medium text-white px-12">
             <i class="fas fa-folder"></i> My Files
         </a>
         <a href="file/addFile" class=" flex relative w-full gap-3 items-center font-medium text-white px-12">
@@ -63,8 +67,8 @@
 @endif
             <i class="fas fa-upload"></i> Upload Files
         </a>
-        <a href="" class=" flex w-full gap-3 items-center font-medium text-white px-12">
-           <i class="fas fa-folder-open"></i> Folders
+        <a href="all-files" class=" flex w-full gap-3 items-center font-medium text-white px-12">
+           <i class="fas fa-folder-open"></i> All Files
         </a>
         <a href="" class=" flex w-full gap-3 items-center font-medium text-white px-12">
             <i class="fas fa-star"></i> Favorites
@@ -162,14 +166,11 @@
 
         @php
             $ext = strtolower(pathinfo($file->path, PATHINFO_EXTENSION));
-
-            $icon = '/txt.jpg';
-
             if (in_array($ext, ['jpg','jpeg','png','gif','webp'])) {
                 $icon = '/txt.jpg';
             }
             elseif ($ext == 'pdf') {
-                $icon = '/document.png';
+                $icon = '/pdffile.jpg';
             }
             elseif (in_array($ext, ['doc','docx'])) {
                 $icon = '/word.jpg';
@@ -182,6 +183,9 @@
             }
             elseif (in_array($ext, ['ppt','pptx'])) {
                 $icon = '/powerpoint.jpg';
+            }
+            else {
+                 $icon = '/txt.jpg';
             }
         @endphp
 

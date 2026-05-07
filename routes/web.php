@@ -32,4 +32,5 @@ Route::get('/file/view/{id}', [FilesController::class, 'view'])
     Route::delete('/file/{id}', [FilesController::class, 'delete'])->name('file.delete');
 Route::get('/file/{id}/edit', [FilesController::class, 'edit'])->name('file.edit');
 Route::post('/file/{id}/update', [FilesController::class, 'update'])->name('file.update');
+Route::get('/all-files', [FilesController::class, 'allFiles'])->name('files.all');
 require __DIR__.'/auth.php';

@@ -94,7 +94,6 @@
 </div> 
         <!-- submit -->
         <button type="submit"
-         onclick="alert('clicked')"
                 class="w-full bg-blue-600 hover:bg-blue-700 text-white py-3 rounded-xl font-bold transition">
             Upload File
         </button>

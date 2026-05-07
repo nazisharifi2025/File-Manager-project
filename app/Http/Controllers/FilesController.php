@@ -14,14 +14,15 @@ use Illuminate\Support\Facades\Storage;
 class FilesController extends Controller
 {
     // قسمت علاوه کردن دیتا
+    // بخش نمایش فورم
     public function shoingForm(){
         $files = Files::all();
         $user = User::all();
         return view('addFile' , compact('files', 'user'));
     }
+    // بخش علاوه کردن دیتا 
 public function insert(Request $request)
 {
-    // dd($request->all());
     $path = null;
 
     if ($request->hasFile('path')) {
@@ -58,13 +59,13 @@ public function insert(Request $request)
     $files = Files::with(['permissions' => function($q){
         $q->where('user_id', auth()->id());
         }])->get();
-        // Gate::authorize('print' , $files);
+        // مجموعه فایل ها را نمایش میدهد
     $totalFiles = Files::count('id');
-
-    $storageUsed = Files::sum('size'); // فرض بر byte یا KB
-
+    // سایز فایل ها را میگیرد
+    $storageUsed = Files::sum('size'); 
+    // فایل های که امروز اضافه شده را میگیرد
     $newFiles = Files::whereDate('created_at' , today())->count('id');
-
+    // مجموعه user هارا میگیرد
     $totalUsers = User::count('id');
     return view('dashboard', compact('files' ,'totalFiles',
         'storageUsed',
@@ -102,7 +103,7 @@ public function update(Request $request, string $id)
 
     $path = $file->path;
 
-    // 👇 اگر فایل جدید آپلود شد
+    // اگر فایل جدید آپلود شد
     if ($request->hasFile('path')) {
 
         // حذف فایل قبلی
@@ -114,7 +115,7 @@ public function update(Request $request, string $id)
         $path = $request->file('path')->store('files', 'public');
     }
 
-    // 👇 آپدیت فایل
+    //  آپدیت فایل
     $file->update([
         "name" => $request->name,
         "path" => $path,
@@ -122,7 +123,7 @@ public function update(Request $request, string $id)
         "size" => $request->size,
     ]);
 
-    // 👇 آپدیت permissions (درست و حرفه‌ای)
+    //  آپدیت permissions 
    
     if ($request->has('permissions')) {
         foreach ($request->permissions as $userId => $permissions) {
@@ -141,7 +142,7 @@ public function update(Request $request, string $id)
     }
     }
 
-    return redirect('/dashboard')->with('success', 'فایل آپدیت شد ✅');
+    return redirect('/dashboard')->with('success', 'فایل آپدیت شد ');
 }
 // قسمت دلینت کردن دیتا
 public function delete(string $id)
@@ -153,7 +154,7 @@ public function delete(string $id)
         ->first();
 
     if (!$permission || !$permission->can_delete) {
-        return redirect()->back()->with('error', 'شما اجازه حذف این فایل را ندارید ❌');
+        return redirect()->back()->with('error', 'شما اجازه حذف این فایل را ندارید ');
     }
 
     if ($file->path) {
@@ -162,7 +163,7 @@ public function delete(string $id)
 
     $file->delete();
 
-    return redirect('/dashboard')->with('success', 'فایل حذف شد ✅');
+    return redirect('/dashboard')->with('success', 'فایل حذف شد ');
 }
 public function print($id)
 {
@@ -173,9 +174,15 @@ public function print($id)
     ->first();
 
     if (!$permission || !$permission->can_print) {
-        return redirect()->back()->with('error', 'شما اجازه پرینت این فایل را ندارید ❌');
+        return redirect()->back()->with('error', 'شما اجازه پرینت این فایل را ندارید ');
     }
 
     return view('prints', compact('file'));
+}
+public function allFiles()
+{
+    $files = Files::all();
+
+    return view('allFiles', compact('files'));
 }
 }
