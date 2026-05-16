@@ -216,7 +216,7 @@
             </td>
             {{-- date --}}
               <td class="p-3 text-gray-300">
-                {{ $file->created_at }} KB
+                {{ $file->created_at }} 
             </td>
             <!-- Action -->
             <td class="p-3 text-center">
