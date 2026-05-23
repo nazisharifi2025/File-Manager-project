@@ -83,8 +83,8 @@
     </div>
     <div class=" col-span-4 w-full h-screen overflow-y-auto no-scrollbar  p-12">
         <h1 class=" text-4xl font-bold text-white my-6">All Files</h1>
-      <div class="w-12/12 mx-auto">
-        <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-6 p-6">
+      <div class="w-10/12 mx-auto">
+        <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-3 gap-6 p-6">
 
 @foreach($files as $file)
 <div class="group relative bg-slate-800/70 backdrop-blur-xl border border-slate-700 rounded-2xl p-4 shadow-lg hover:shadow-2xl hover:-translate-y-1 transition duration-300">
